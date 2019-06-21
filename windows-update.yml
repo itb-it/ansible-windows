@@ -4,7 +4,6 @@
 # http://docs.ansible.com/ansible/win_updates_module.html
 # https://docs.ansible.com/ansible/win_reboot_module.html
 
-- name:  Windows Update
 - hosts: all
   any_errors_fatal: false
   serial:
