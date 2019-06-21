@@ -4,40 +4,18 @@
 # http://docs.ansible.com/ansible/win_updates_module.html
 # https://docs.ansible.com/ansible/win_reboot_module.html
 
-- hosts: all
-  vars:
-    win_updates_categories:
-              – Application
-              – Connectors
-              – DefinitionUpdates
-              – DeveloperKits
-              – FeaturePacks
-              – Guidance
-              – ServicePacks
-              – Tools
-              – UpdateRollups
-              – CriticalUpdates
-              – SecurityUpdates
+ - name:  Windows Update
+  hosts: all
+  gather_facts: false
   tasks:
-  # Check if there are missing updates
-  - name: Check for missing updates.
-    win_updates:
-      state: searched
-      category_names: "{{ win_updates_categories }}"
-    register: update_count
-    ignore_errors: yes
+    - name: Running Windows Update
+      win_updates:
+        category_names: ['SecurityUpdates','CriticalUpdates','UpdateRollups', 'Updates', 'DefinitionUpdates', 'Tools', 'ServicePacks', 'Guidance', 'FeaturePacks', 'DeveloperKits', 'Application', 'Connectors']
+      register: result
 
-  - name: Reboot if needed
-    win_shell: Restart-Computer -Force
-    when: update_count.reboot_required
-    ignore_errors: yes
-
-  - name: Install missing updates.
-    win_updates:
-      category_names: "{{ win_updates_categories }}"
-    register: update_result
-
-  - name: Reboot if needed
-    win_shell: Restart-Computer -Force
-    when: update_result.reboot_required
-    ignore_errors: yes
+    # output results
+    - debug: var=result
+    
+    # reboot only if required
+    - win_reboot:
+      when: result.reboot_required
