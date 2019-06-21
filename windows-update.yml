@@ -7,8 +7,14 @@
 - name:  Windows Update
   hosts: all
   gather_facts: false
-  tasks:
-  #Install missing updates only if at least one is missing
+tasks:
+ 
+   # Check if there are missing updates
+        – name: Check for missing updates.
+          win_updates: state=searched
+          register: update_count
+ 
+    #Install missing updates only if at least one is missing
         – name: Install missing updates.
           win_updates:
             category_names:
@@ -28,5 +34,4 @@
           win_reboot:
           when: update_result.reboot_required
       when: update_count.found_update_count|int >= 1
-
   
