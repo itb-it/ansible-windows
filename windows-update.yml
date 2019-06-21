@@ -5,7 +5,7 @@
 # https://docs.ansible.com/ansible/win_reboot_module.html
 
 - hosts: all
-  any_errors_fatal: false
+ #any_errors_fatal: false
   serial:
    - 1
    - 5%
