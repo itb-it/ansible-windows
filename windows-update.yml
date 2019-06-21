@@ -7,7 +7,7 @@
 - name:  Windows Update
   hosts: all
   gather_facts: false
-tasks:
+  tasks:
  
    # Check if there are missing updates
         – name: Check for missing updates.
