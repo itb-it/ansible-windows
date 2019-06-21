@@ -8,8 +8,9 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Running Windows Update
-      win_updates:
+  #Install missing updates only if at least one is missing
+        – name: Install missing updates.
+          win_updates:
             category_names:
               – Application
               – Connectors
@@ -22,13 +23,10 @@
               – UpdateRollups
               – CriticalUpdates
               – SecurityUpdates
-      register: result
-
-    # output results
-    - debug: var=result
-
-    # reboot only if required
-    - win_reboot:
-      when: result.reboot_required
+          register: update_result
+        – name: Reboot, if needed.
+          win_reboot:
+          when: update_result.reboot_required
+      when: update_count.found_update_count|int >= 1
 
   
