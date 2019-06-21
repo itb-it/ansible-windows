@@ -5,12 +5,6 @@
 # https://docs.ansible.com/ansible/win_reboot_module.html
 
 - hosts: all
- #any_errors_fatal: false
-  serial:
-   - 1
-   - 5%
-   - 25%
-  max_fail_percentage: 10%
   vars:
     win_updates_categories:
               – Application
